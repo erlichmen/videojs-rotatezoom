@@ -1,13 +1,9 @@
-console.log('zoomrotate: Start');
-
 (function(){
     var defaults, extend;
-    console.log('zoomrotate: Init defaults');
     defaults = {
       zoom: 1,
       rotate: 0
     };
-    console.log('zoomrotate: Init Extend');
     extend = function() {
       var args, target, i, object, property;
       args = Array.prototype.slice.call(arguments);
@@ -31,7 +27,6 @@ console.log('zoomrotate: Start');
     * register the zoomrotate plugin
     */
     videojs.plugin('zoomrotate', function(options){
-        console.log('zoomrotate: Register init');
         var settings, player, video, poster;
         settings = extend(defaults, options);
 
@@ -39,11 +34,6 @@ console.log('zoomrotate: Start');
         player = this.el();
         video = this.el().getElementsByTagName('video')[0];
         poster = this.el().getElementsByTagName('div')[1]; // div vjs-poster
-
-        console.log('zoomrotate: '+video.style);
-        console.log('zoomrotate: '+poster.style);
-        console.log('zoomrotate: '+options.rotate);
-        console.log('zoomrotate: '+options.zoom);
 
         /* Array of possible browser specific settings for transformation */
         var properties = ['transform', 'WebkitTransform', 'MozTransform',
@@ -63,10 +53,15 @@ console.log('zoomrotate: Start');
 
         /* Let's do it */
         player.style.overflow = 'hidden';
-        video.style[prop]='scale('+options.zoom+') rotate('+options.rotate+'deg)';
-        poster.style[prop]='scale('+options.zoom+') rotate('+options.rotate+'deg)';
-        console.log('zoomrotate: Register end');
+
+        var video_zoom = options.video_zoom || options.zoom;
+        var video_rotate = options.video_rotate || options.rotate;
+
+        video.style[prop]='scale('+video_zoom+') rotate('+video_rotate+'deg)';
+
+        var poster_zoom = options.poster_zoom || options.zoom;
+        var poster_rotate = options.poster_rotate || options.rotate;
+
+        poster.style[prop]='scale('+poster_zoom+') rotate('+poster_rotate+'deg)';
     });
 })();
-
-console.log('zoomrotate: End');
